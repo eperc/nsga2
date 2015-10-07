@@ -1,3 +1,4 @@
+// Julien a modifie ce fichier
 /* This is a Multi-Objective GA program.
 **********************************************************************
 *  This program is the implementation of the NSGA-2 proposed by      *
@@ -8,7 +9,7 @@
 **********************************************************************
 
 18.08.2003: The keepaliven.h file is modified to have normalized
-            crowding distance calculation. The previous version of 
+            crowding distance calculation. The previous version of
             the code did not have this feature. This way, maintaining
             a good distribution of solutions in problems having quite
             a different range of objective functions were difficult.
@@ -58,7 +59,7 @@ The program generates few output files. These are described as
 *                 This file has the all the variables of the feasible
                   and non-dominated individuals at the final generation.
                   The i-th solutions here corresponds to the i-th solution
-                  in the final_fitness.out file. 
+                  in the final_fitness.out file.
 
 7.plot.out        This file contains gnuplot-based file for plotting
                   the non-dominated feasible solutions obtained by the code.
@@ -75,7 +76,7 @@ Input data files: Three files are included, but at one time one is needed
 depending on the type of variables used:
 inp-r (template file input-real)  : All variables are real-coded
 inp-b (template file input-binary): All variables are binary-coded
-inp-rb(template file input-rl+bin): Some variables are real and some are binary  
+inp-rb(template file input-rl+bin): Some variables are real and some are binary
 */
 
 #include <stdio.h>
@@ -134,7 +135,7 @@ typedef struct
   float rankrat[maxpop];  /*Rank Ratio*/
   int rankno[maxpop];     /*Individual at different ranks*/
   individual ind[maxpop], /*Different Individuals*/
-    *ind_ptr; 
+    *ind_ptr;
 }population ;             /*Popuation Structure*/
 
 #include "random.h"       /*Random Number Generator*/
@@ -185,7 +186,7 @@ main()
 
   int i,j,l,f,maxrank1;
   float *ptr,tot;
-  FILE 
+  FILE
     *rep_ptr,
     *gen_ptr,
     *rep2_ptr,
@@ -222,18 +223,18 @@ main()
 
    /*Binary Initializaton*/
   if (nchrom > 0)
-    init(old_pop_ptr);  
+    init(old_pop_ptr);
   if (nvar > 0)
     realinit(old_pop_ptr);
-  
+
   old_pop_ptr = &(oldpop);
 
   // decode binary strings
-  decode(old_pop_ptr); 
+  decode(old_pop_ptr);
 
   old_pop_ptr = &(oldpop);
   new_pop_ptr = &(newpop);
-  
+
   for(j = 0;j < popsize;j++)
     {
       /*Initializing the Rank array having different individuals
@@ -241,16 +242,16 @@ main()
        old_pop_ptr->rankno[j] = 0;
        new_pop_ptr->rankno[j] = 0;
     }
-  
+
   old_pop_ptr = &(oldpop);
-  
-  func(old_pop_ptr); 
+
+  func(old_pop_ptr);
   /*Function Calculaiton*/
-  
+
   fprintf(rep_ptr,"----------------------------------------------------\n");
   fprintf(rep_ptr,"Statistics at Generation 0 ->\n");
   fprintf(rep_ptr,"--------------------------------------------------\n");
-  
+
   /********************************************************************/
   /*----------------------GENERATION STARTS HERE----------------------*/
   for (i = 0;i < gener;i++)
@@ -261,110 +262,110 @@ main()
       fprintf(rep_ptr,"Population at generation no. -->%d\n",i+1);
       fprintf(gen_ptr,"#Generation No. -->%d\n",i+1);
       fprintf(gen_ptr,"#Variable_vector  Fitness_vector Constraint_violation Overall_penalty\n");
-      
+
       /*--------SELECT----------------*/
       nselect(old_pop_ptr ,mate_pop_ptr );
-      
+
       new_pop_ptr = &(newpop);
       mate_pop_ptr = &(matepop);
-      
-      /*CROSSOVER----------------------------*/      
-      if (nchrom > 0) 
+
+      /*CROSSOVER----------------------------*/
+      if (nchrom > 0)
 	{
-	  
+
 	  if(optype == 1)
 	    {
 	      crossover(new_pop_ptr ,mate_pop_ptr );
 	      /*Binary Cross-over*/
 	    }
-	  
+
 	  if(optype == 2)
 	    {
 	      unicross(new_pop_ptr ,mate_pop_ptr );
 	      /*Binary Uniform Cross-over*/
 	    }
 	}
-      if (nvar > 0) 
+      if (nvar > 0)
 	realcross(new_pop_ptr ,mate_pop_ptr );
       /*Real Cross-over*/
-      
-      
+
+
       /*------MUTATION-------------------*/
       new_pop_ptr = &(newpop);
-      
+
       if (nchrom > 0)
 	mutate(new_pop_ptr );
       /*Binary Mutation */
-      
+
       if (nvar > 0)
 	real_mutate(new_pop_ptr );
       /*Real Mutation*/
-      
+
       new_pop_ptr = &(newpop);
-      
+
       /*-------DECODING----------*/
       if(nchrom > 0)
 	decode(new_pop_ptr );
       /*Decoding for binary strings*/
-      
+
       /*----------FUNCTION EVALUATION-----------*/
       new_pop_ptr = &(newpop);
       func(new_pop_ptr );
-      
+
       /*-------------------SELECTION KEEPING FRONTS ALIVE--------------*/
       old_pop_ptr = &(oldpop);
       new_pop_ptr = &(newpop);
       mate_pop_ptr = &(matepop);
-      
+
       /*Elitism And Sharing Implemented*/
-      keepalive(old_pop_ptr ,new_pop_ptr ,mate_pop_ptr,i+1);      
-      
+      keepalive(old_pop_ptr ,new_pop_ptr ,mate_pop_ptr,i+1);
+
       mate_pop_ptr = &(matepop);
       if(nchrom > 0)
 	decode(mate_pop_ptr );
-      
+
       mate_pop_ptr = &(matepop);
-      /*------------------REPORT PRINTING--------------------------------*/  
+      /*------------------REPORT PRINTING--------------------------------*/
       report(i ,old_pop_ptr ,mate_pop_ptr ,rep_ptr ,gen_ptr, lastit );
-      
+
       /*==================================================================*/
-      
+
       /*----------------Rank Ratio Calculation------------------------*/
       new_pop_ptr = &(matepop);
       old_pop_ptr = &(oldpop);
-      
+
       /*Finding the greater maxrank among the two populations*/
-      
+
       if(old_pop_ptr->maxrank > new_pop_ptr->maxrank)
 	maxrank1 = old_pop_ptr->maxrank;
-      else 
+      else
 	maxrank1 = new_pop_ptr->maxrank;
 
       fprintf(rep2_ptr,"--------RANK AT GENERATION %d--------------\n",i+1);
       fprintf(rep2_ptr,"Rank old ranks   new ranks     rankratio\n");
 
       for(j = 0;j < maxrank1 ; j++)
-	{ 
-	  /*Sum of the no of individuals at any rank in old population 
+	{
+	  /*Sum of the no of individuals at any rank in old population
 	    and the new populaion*/
-	  
+
 	  tot = (old_pop_ptr->rankno[j])+ (new_pop_ptr->rankno[j]);
-	  
+
 	  /*Finding the rank ratio for new population at this rank*/
-	  
+
 	  new_pop_ptr->rankrat[j] = (new_pop_ptr->rankno[j])/tot;
-	  
+
 	  /*Printing this rank ratio to a file called ranks.dat*/
-	  
+
 	  fprintf(rep2_ptr," %d\t  %d\t\t %d\t %f\n",j+1,old_pop_ptr->rankno[j],new_pop_ptr->rankno[j],new_pop_ptr->rankrat[j]);
-	  
+
 	}
-      
+
       fprintf(rep2_ptr,"-----------------Rank Ratio-------------------\n");
       /*==================================================================*/
-      
+
       /*=======Copying the new population to old population======*/
-      
+
       old_pop_ptr = &(oldpop);
       new_pop_ptr = &(matepop);
 
@@ -375,10 +376,10 @@ main()
 	  if(nchrom > 0)
 	    {
 	      /*For Binary GA copying of the chromosome*/
-	      
+
 	      for(l = 0;l < chrom;l++)
 		old_pop_ptr->ind_ptr->genes[l]=new_pop_ptr->ind_ptr->genes[l];
-	      
+
 	      for(l = 0;l < nchrom;l++)
 		old_pop_ptr->ind_ptr->xbin[l] = new_pop_ptr->ind_ptr->xbin[l];
 	    }
@@ -388,49 +389,49 @@ main()
 	      for(l = 0;l < nvar;l++)
 		old_pop_ptr->ind_ptr->xreal[l] = new_pop_ptr->ind_ptr->xreal[l];
 	    }
-	  
-	  /*Copying the fitness vector */	  
+
+	  /*Copying the fitness vector */
 	  for(l = 0 ; l < nfunc ;l++)
 	    old_pop_ptr->ind_ptr->fitness[l] = new_pop_ptr->ind_ptr->fitness[l];
-	  
+
 	  /*Copying the dummy fitness*/
 	  old_pop_ptr->ind_ptr->cub_len = new_pop_ptr->ind_ptr->cub_len;
-	  
+
 	  /*Copying the rank of the individuals*/
 	  old_pop_ptr->ind_ptr->rank = new_pop_ptr->ind_ptr->rank;
-	  
+
 	  /*Copying the error and constraints of the individual*/
-	  
+
 	  old_pop_ptr->ind_ptr->error = new_pop_ptr->ind_ptr->error;
 	  for(l = 0;l < ncons;l++)
 	    {
 	      old_pop_ptr->ind_ptr->constr[l] = new_pop_ptr->ind_ptr->constr[l];
 	    }
-	  
+
 	  /*Copying the flag of the individuals*/
 	  old_pop_ptr->ind_ptr->flag = new_pop_ptr->ind_ptr->flag;
 	}   // end of j
-      
+
       maxrank1 = new_pop_ptr->maxrank ;
-	  
-      /*Copying the array having the record of the individual 
+
+      /*Copying the array having the record of the individual
 	at different ranks */
       for(l = 0;l < popsize;l++)
 	{
 	  old_pop_ptr->rankno[l] = new_pop_ptr->rankno[l];
 	}
-      
+
       /*Copying the maxrank */
       old_pop_ptr->maxrank = new_pop_ptr->maxrank;
-      
+
       /*Printing the fitness record for last generation in a file last*/
       if(i == gener-1)
-       	{  // for the last generation 
+       	{  // for the last generation
 	  old_pop_ptr = &(matepop);
 	  for(f = 0;f < popsize ; f++) // for printing
 	    {
 	      old_pop_ptr->ind_ptr = &(old_pop_ptr->ind[f]);
-	      
+
 	      if ((old_pop_ptr->ind_ptr->error <= 0.0) && (old_pop_ptr->ind_ptr->rank == 1))  // for all feasible solutions and non-dominated solutions
 		{
 		  for(l = 0;l < nfunc;l++)
@@ -442,7 +443,7 @@ main()
 		  if (ncons > 0)
 		    fprintf(end_ptr,"%f\t",old_pop_ptr->ind_ptr->error);
 		  fprintf(end_ptr,"\n");
-		  
+
 		  if (nvar > 0)
 		    {
 		      for(l = 0;l < nvar ;l++)
@@ -451,7 +452,7 @@ main()
 			}
 		      fprintf(g_var,"  ");
 		    }
-		  
+
 		  if(nchrom > 0)
 		    {
 		      for(l = 0;l < nchrom;l++)
@@ -462,20 +463,20 @@ main()
 		  fprintf(g_var,"\n");
 		}  // feasibility check
 	    } // end of f (printing)
-	  
+
 	} // for the last generation
-    }  // end of i 
+    }  // end of i
 
   /*                   Generation Loop Ends                                */
   /************************************************************************/
-  
+
   fprintf(rep_ptr,"NO. OF CROSSOVER = %d\n",ncross);
   fprintf(rep_ptr,"NO. OF MUTATION = %d\n",nmut);
   fprintf(rep_ptr,"------------------------------------------------------------\n");
   fprintf(rep_ptr,"---------------------------------Thanks---------------------\n");
   fprintf(rep_ptr,"-------------------------------------------------------------\n");
   printf("NOW YOU CAN LOOK IN THE FILE OUTPUT2.DAT\n");
-  
+
   /*Closing the files*/
   fclose(rep_ptr);
   fclose(gen_ptr);
