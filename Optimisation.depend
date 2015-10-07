@@ -2,3 +2,57 @@
 1444224362 source:u:\bureau\github\nsga2\main.cpp
 	<iostream>
 
+1444231109 source:u:\bureau\github\nsga2\nsga2.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"random.h"
+	"input.h"
+	"realinit.h"
+	"init.h"
+	"decode.h"
+	"ranking.h"
+	"rancon.h"
+	"func-con.h"
+	"select.h"
+	"crossover.h"
+	"uniformxr.h"
+	"realcross2.h"
+	"mut.h"
+	"realmut1.h"
+	"keepaliven.h"
+	"report.h"
+
+1444224363 u:\bureau\github\nsga2\random.h
+	<math.h>
+
+1444231496 u:\bureau\github\nsga2\input.h
+
+1444224363 u:\bureau\github\nsga2\realinit.h
+
+1444224362 u:\bureau\github\nsga2\init.h
+
+1444224362 u:\bureau\github\nsga2\decode.h
+
+1444224363 u:\bureau\github\nsga2\ranking.h
+
+1444224363 u:\bureau\github\nsga2\rancon.h
+
+1444224362 u:\bureau\github\nsga2\func-con.h
+
+1444224363 u:\bureau\github\nsga2\select.h
+
+1444224362 u:\bureau\github\nsga2\crossover.h
+
+1444224363 u:\bureau\github\nsga2\uniformxr.h
+
+1444224363 u:\bureau\github\nsga2\realcross2.h
+
+1444224362 u:\bureau\github\nsga2\mut.h
+
+1444224363 u:\bureau\github\nsga2\realmut1.h
+
+1444224362 u:\bureau\github\nsga2\keepaliven.h
+
+1444224363 u:\bureau\github\nsga2\report.h
+

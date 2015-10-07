@@ -472,10 +472,10 @@ main()
 
   fprintf(rep_ptr,"NO. OF CROSSOVER = %d\n",ncross);
   fprintf(rep_ptr,"NO. OF MUTATION = %d\n",nmut);
-  fprintf(rep_ptr,"------------------------------------------------------------\n");
-  fprintf(rep_ptr,"---------------------------------Thanks---------------------\n");
   fprintf(rep_ptr,"-------------------------------------------------------------\n");
-  printf("NOW YOU CAN LOOK IN THE FILE OUTPUT2.DAT\n");
+  fprintf(rep_ptr,"-------------------------------------------------------------\n");
+  fprintf(rep_ptr,"-------------------------------------------------------------\n");
+  printf("\nLE FICHIER \<OUTPUT2.DAT\> A ETE GENERE !\n");
 
   /*Closing the files*/
   fclose(rep_ptr);

@@ -38,7 +38,6 @@
 		<Unit filename="init.h" />
 		<Unit filename="input.h" />
 		<Unit filename="keepaliven.h" />
-		<Unit filename="main.cpp" />
 		<Unit filename="mut.h" />
 		<Unit filename="nsga2.c">
 			<Option compilerVar="CC" />
